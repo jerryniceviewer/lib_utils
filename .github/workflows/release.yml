@@ -1,0 +1,30 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11
+
+    - name: Build and publish
+      run: ./gradlew clean build publish
+      env:
+        USERNAME: ${{ secrets.GITHUB_ACTOR }}
+        TOKEN: ${{ secrets.GITHUB_TOKEN }}
